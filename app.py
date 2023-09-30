@@ -34,12 +34,12 @@ def obras():
             # Consulta el contenido de la tabla "autores".
             cursor = connection.cursor()
             cursor.execute("SELECT * FROM concierto")
-            contenido_autores = [dict(zip([column[0] for column in cursor.description], row)) for row in cursor.fetchall()]
+            contenido_concierto = [dict(zip([column[0] for column in cursor.description], row)) for row in cursor.fetchall()]
             
             cursor.close()
             connection.close()
             
-            return render_template("obras.html", contenido_autores=contenido_autores)
+            return render_template("obras.html", contenido_concierto=contenido_concierto)
             
         except cx_Oracle.DatabaseError as e:
             return "Error: Credenciales incorrectas. Vuelve a intentarlo."
