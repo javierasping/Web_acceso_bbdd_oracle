@@ -1,8 +1,11 @@
-import requests,json
-from flask import Flask, render_template, abort, redirect, request
+import requests,json,cx_Oracle
+from flask import Flask, render_template, abort, redirect, request, session
+import os
+
 
 app = Flask(__name__)
-url = "https://gateway.marvel.com/v1/public/characters?apikey=1bf075d536f284d8d6c923c4b425be90&hash=0ac16158f12e2734c5e67838045eded3&ts=1683278024.2311842"
+
+app.secret_key = os.urandom(24)
 
 @app.route('/')
 def inicio():
@@ -11,9 +14,45 @@ def inicio():
 
 
 
-@app.route('/obras')
+import cx_Oracle
+
+# ...
+
+# ...
+
+@app.route('/obras', methods=['GET', 'POST'])
 def obras():
-    return render_template("obras.html")
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        try:
+            dsn_tns = cx_Oracle.makedsn('192.168.122.179', '1521', service_name='ORCLCDB')
+            connection = cx_Oracle.connect(username, password, dsn=dsn_tns)            
+            session['usuario_autenticado'] = True
+            
+            # Consulta el contenido de la tabla "autores".
+            cursor = connection.cursor()
+            cursor.execute("SELECT * FROM concierto")
+            contenido_autores = [dict(zip([column[0] for column in cursor.description], row)) for row in cursor.fetchall()]
+            
+            cursor.close()
+            connection.close()
+            
+            return render_template("obras.html", contenido_autores=contenido_autores)
+            
+        except cx_Oracle.DatabaseError as e:
+            return "Error: Credenciales incorrectas. Vuelve a intentarlo."
+    
+    # Si el usuario ya está autenticado, muestra la página de obras.
+    if session.get('usuario_autenticado'):
+        return render_template("obras.html")
+
+    # Si el método es GET y el usuario no está autenticado, muestra el formulario de inicio de sesión.
+    return render_template("login.html")
+
+# ...
+
 
 
 @app.route('/error')
