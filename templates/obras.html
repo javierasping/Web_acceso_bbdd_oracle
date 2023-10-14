@@ -11,7 +11,7 @@
     <a name="{{ tabla[0] }}"></a>
     <h3>Tabla "{{ tabla[0] }}":</h3>
     {% if contenido_tablas[tabla[0]] %}
-        <table border="1">
+        <table border="1" align="center">
             <thead>
                 <tr>
                     {% for columna, valor in contenido_tablas[tabla[0]][0].items() %}
