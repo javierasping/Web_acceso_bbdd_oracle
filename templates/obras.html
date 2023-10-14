@@ -6,29 +6,35 @@
 
 
 
-{% if contenido_concierto %}
-    <h2>Contenido de la tabla "concierto":</h2>
-    <table border="1">
-        <thead>
-            <tr>
-                {% for columna, valor in contenido_concierto[0].items() %}
-                    <th>{{ columna }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            {% for fila in contenido_concierto %}
+<h2>Tablas con permisos:</h2>
+{% for tabla in tablas_con_permiso %}
+    <a name="{{ tabla[0] }}"></a>
+    <h3>Tabla "{{ tabla[0] }}":</h3>
+    {% if contenido_tablas[tabla[0]] %}
+        <table border="1">
+            <thead>
                 <tr>
-                    {% for columna, valor in fila.items() %}
-                        <td>{{ valor }}</td>
+                    {% for columna, valor in contenido_tablas[tabla[0]][0].items() %}
+                        <th>{{ columna }}</th>
                     {% endfor %}
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% else %}
-    <p>No hay datos disponibles en la tabla "concierto".</p>
-{% endif %}
+            </thead>
+            <tbody>
+                {% for fila in contenido_tablas[tabla[0]] %}
+                    <tr>
+                        {% for columna, valor in fila.items() %}
+                            <td>{{ valor }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No hay datos disponibles en la tabla "{{ tabla[0] }}".</p>
+    {% endif %}
+{% endfor %}
+
+
 
 
 <br>

@@ -31,22 +31,24 @@ def obras():
             connection = cx_Oracle.connect(username, password, dsn=dsn_tns)            
             session['usuario_autenticado'] = True
             
-            # Consulta el contenido de la tabla "autores".
             cursor = connection.cursor()
-            cursor.execute("SELECT * FROM concierto")
-            contenido_concierto = [dict(zip([column[0] for column in cursor.description], row)) for row in cursor.fetchall()]
-            
+            cursor.execute("select TABLE_NAME from user_tables")
+            tablas_con_permiso = cursor.fetchall()
+            contenido_tablas = {}
+
+            for tabla in tablas_con_permiso:
+                cursor.execute(f"SELECT * FROM {tabla[0]}")
+                contenido_tabla = [dict(zip([column[0] for column in cursor.description], row)) for row in cursor.fetchall()]
+                contenido_tablas[tabla[0]] = contenido_tabla
+
             cursor.close()
             connection.close()
             
-            return render_template("obras.html", contenido_concierto=contenido_concierto)
+            return render_template("obras.html", tablas_con_permiso=tablas_con_permiso, contenido_tablas=contenido_tablas)
             
         except cx_Oracle.DatabaseError as e:
             return "Error: Credenciales incorrectas. Vuelve a intentarlo."
-    
-    # Si el usuario ya está autenticado, muestra la página de obras.
-    if session.get('usuario_autenticado'):
-        return render_template("obras.html")
+
 
     # Si el método es GET y el usuario no está autenticado, muestra el formulario de inicio de sesión.
     return render_template("login.html")
