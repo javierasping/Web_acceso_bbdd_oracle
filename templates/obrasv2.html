@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Tabla de entradas{% endblock %}
+{% block contenido %}
+    <h2>Tabla de entradas:</h2>
+    <table border="1" align="center">
+        <thead>
+            <tr>
+                <th>CODIGO_ENTRADA</th>
+                <th>PRECIO</th>
+                <th>DESCUENTO</th>
+                <th>NUM</th>
+                <th>NUM_INI</th>
+                <th>CODIGO_CONCIERTO</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entrada in entradas %}
+                <tr>
+                    <td>{{ entrada[0] }}</td>
+                    <td>{{ entrada[1] }}</td>
+                    <td>{{ entrada[2] }}</td>
+                    <td>{{ entrada[3] }}</td>
+                    <td>{{ entrada[4] }}</td>
+                    <td>{{ entrada[5] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

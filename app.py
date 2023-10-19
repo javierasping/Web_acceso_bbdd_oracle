@@ -13,13 +13,6 @@ def inicio():
 
 
 
-
-import cx_Oracle
-
-# ...
-
-# ...
-
 @app.route('/obras', methods=['GET', 'POST'])
 def obras():
     if request.method == 'POST':
