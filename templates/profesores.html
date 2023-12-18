@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Tabla de profesores{% endblock %}
+{% block contenido %}
+    <h2>Tabla de profesores:</h2>
+    <table border="1" align="center">
+        <thead>
+            <tr>
+                <th>DNI</th>
+                <th>PROFESORES</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for profesores in profesoress %}
+                <tr>
+                    <td>{{ profesores[0] }}</td>
+                    <td>{{ profesores[1] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
